@@ -10,7 +10,7 @@
           <i class="fas fa-tasks"></i>
         </div>
         <h3 class="text-lg font-semibold mb-2">Total Task</h3>
-        <p class="text-2xl font-bold">{{ tasks.length }}</p>
+        <p class="text-2xl font-bold">{{ totalTasks }}</p>
       </div>
 
       <!-- Pending -->
@@ -21,7 +21,7 @@
           <i class="fas fa-clock"></i>
         </div>
         <h3 class="text-lg font-semibold mb-2">Pending</h3>
-        <p class="text-2xl font-bold">{{ tasks.filter(t => t.status === 'pending').length }}</p>
+        <p class="text-2xl font-bold">{{ tasks.pending.length }}</p>
       </div>
 
       <!-- In Progress -->
@@ -32,7 +32,7 @@
           <i class="fas fa-spinner"></i>
         </div>
         <h3 class="text-lg font-semibold mb-2">In Progress</h3>
-        <p class="text-2xl font-bold">{{ tasks.filter(t => t.status === 'in_progress').length }}</p>
+        <p class="text-2xl font-bold">{{ tasks.in_progress.length }}</p>
       </div>
 
       <!-- Selesai -->
@@ -43,34 +43,32 @@
           <i class="fas fa-check-circle"></i>
         </div>
         <h3 class="text-lg font-semibold mb-2">Selesai</h3>
-        <p class="text-2xl font-bold">{{ tasks.filter(t => t.status === 'completed').length }}</p>
+        <p class="text-2xl font-bold">{{ tasks.completed.length }}</p>
       </div>
     </div>
 
     <!-- Tabel Task -->
     <div class="bg-white shadow-lg rounded-xl p-6">
-      <h3 class="text-lg font-semibold mb-4">Detail Task</h3>
+      <h3 class="text-lg font-semibold mb-4">List Task</h3>
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 rounded-lg">
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul Task</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deskripsi</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Dibuat</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deadline</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-100">
             <tr
-              v-for="(task, index) in tasks"
+              v-for="(task, index) in allTasks"
               :key="task.id"
               class="hover:bg-gray-50 transition-colors"
             >
               <td class="px-6 py-4 whitespace-nowrap">{{ index + 1 }}</td>
               <td class="px-6 py-4 whitespace-nowrap">{{ task.title }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ task.description }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
                   class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
@@ -83,13 +81,10 @@
                   {{ task.status }}
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ task.created_at }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <button class="text-blue-500 hover:text-blue-700 font-medium">Edit</button>
-                <button class="text-red-500 hover:text-red-700 font-medium ml-2">Hapus</button>
-              </td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ formatDate(task.created_at) }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ formatDate(task.deadline) }}</td>
             </tr>
-            <tr v-if="tasks.length === 0">
+            <tr v-if="allTasks.length === 0">
               <td colspan="6" class="text-center py-4 text-gray-400">Tidak ada task</td>
             </tr>
           </tbody>
@@ -100,22 +95,61 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      tasks: [
-        { id: 1, title: "Task A", description: "Deskripsi Task A", status: "pending", created_at: "2025-11-22" },
-        { id: 2, title: "Task B", description: "Deskripsi Task B", status: "in_progress", created_at: "2025-11-21" },
-        { id: 3, title: "Task C", description: "Deskripsi Task C", status: "completed", created_at: "2025-11-20" },
-        { id: 4, title: "Task D", description: "Deskripsi Task D", status: "pending", created_at: "2025-11-19" },
-      ]
+      tasks: {
+        pending: [],
+        in_progress: [],
+        completed: []
+      }
     };
+  },
+  computed: {
+    totalTasks() {
+      return this.tasks.pending.length + this.tasks.in_progress.length + this.tasks.completed.length;
+    },
+    allTasks() {
+      return [...this.tasks.pending, ...this.tasks.in_progress, ...this.tasks.completed];
+    }
+  },
+  mounted() {
+    this.fetchTasks();
+  },
+  methods: {
+    async fetchTasks() {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:8000/api/tasks/by-status", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (response.data.success) {
+          this.tasks.pending = response.data.data.pending;
+          this.tasks.in_progress = response.data.data.in_progress;
+          this.tasks.completed = response.data.data.completed;
+        }
+      } catch (error) {
+        console.error("Gagal ambil tasks:", error);
+      }
+    },
+    formatDate(dateStr) {
+      if (!dateStr) return "-";
+      const date = new Date(dateStr);
+      return new Intl.DateTimeFormat("id-ID", {
+        year: "numeric",
+        month: "long",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(date);
+    }
   }
 };
 </script>
 
 <style scoped>
-/* Hover smooth effect for cards */
 .hover\:scale-105:hover {
   transform: scale(1.05);
 }

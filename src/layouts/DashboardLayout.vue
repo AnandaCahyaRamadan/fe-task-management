@@ -43,26 +43,51 @@ export default {
         this.$refs.sidebar.openMobileSidebar();
       }
     },
+
     async logout() {
-      const token = localStorage.getItem("token");
-      if (!token) { this.$router.push("/login"); return; }
+      const result = await Swal.fire({
+        title: 'Logout',
+        text: 'Apakah Anda yakin ingin keluar?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#00A884',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, logout',
+        cancelButtonText: 'Batal'
+      });
 
-      try {
-        await axios.post(
-          "http://localhost:8000/api/logout",
-          {},
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+      if (result.isConfirmed) {
+        const token = localStorage.getItem("token");
+        if (!token) { 
+          this.$router.push("/login"); 
+          return; 
+        }
 
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        try {
+          await axios.post(
+            "http://localhost:8000/api/logout",
+            {},
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
 
-        Swal.fire({ toast: true, position: "top-end", icon: "success", title: "Logout berhasil", showConfirmButton: false, timer: 1000, timerProgressBar: true });
-        setTimeout(() => this.$router.push("/login"), 1000);
-      } catch (error) {
-        Swal.fire({ toast: true, position: "top-end", icon: "error", title: "Logout gagal", showConfirmButton: false, timer: 1000, timerProgressBar: true });
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+
+          this.$router.push("/login");
+        } catch (error) {
+          console.error(error);
+          Swal.fire({
+              toast: true,
+              position: "top-end",
+              icon: 'error',
+              title: 'Logout gagal',
+              text: 'Coba lagi nanti',
+              showConfirmButton: true
+            });
+        }
       }
     }
+
   }
 };
 </script>

@@ -12,9 +12,15 @@
     "@kyvg/vue3-notification": "^3.4.2",
     "axios": "^1.13.2",
     "core-js": "^3.8.3",
+    "datatables.net": "^2.3.5",
+    "datatables.net-dt": "^2.3.5",
+    "jquery": "^3.7.1",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.4.1",
     "sweetalert2": "^11.26.3",
     "vue": "^3.2.13",
-    "vue-router": "^4.6.3"
+    "vue-router": "^4.6.3",
+    "vue3-easy-data-table": "^1.5.47"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
