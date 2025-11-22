@@ -1,70 +1,84 @@
 <template>
-  <main class="flex-1 p-6 overflow-auto bg-gray-100">
-    <h3 class="text-2xl font-semibold mb-6">Profil Saya</h3>
+  <main class="flex-1 p-6 bg-gray-100 min-h-screen">
+    <h2 class="text-2xl font-bold mb-6">Profil Saya</h2>
 
-    <div class="bg-white shadow-lg rounded-xl p-6 w-full mx-auto">
-      <form @submit.prevent="updateProfile" class="space-y-6">
+    <div class="bg-white shadow-xl rounded-2xl p-8 mx-auto">
+      <form @submit.prevent="updateProfile" class="space-y-5">
+
         <!-- Avatar -->
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center relative">
           <img
             :src="previewImage || user.imageUrl || defaultAvatar"
-            alt=""
-            class="w-32 h-32 rounded-full object-cover mb-2 border-2 border-gray-200"
+            alt="Avatar"
+            class="w-28 h-28 rounded-full object-cover border-4 border-gray-200 shadow-sm"
           />
-          <input type="file" accept="image/*" @change="onImageChange"/>
+          <label
+            class="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-primary/80 transition"
+          >
+            <i class="fas fa-camera"></i>
+            <input type="file" accept="image/*" class="hidden" @change="onImageChange"/>
+          </label>
+          <p v-if="errors.image" class="text-red-500 text-xs mt-2">{{ errors.image[0] }}</p>
         </div>
 
         <!-- Name -->
         <div>
-          <label class="block text-gray-500 font-medium mb-1">Nama</label>
           <input
             type="text"
             v-model="user.name"
             required
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            placeholder="Nama"
+            class="w-full px-4 py-3 text-sm border border-gray-200 rounded-lg placeholder-gray-400
+                   focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
           />
+          <p v-if="errors.name" class="text-red-500 text-xs mt-1">{{ errors.name[0] }}</p>
         </div>
 
         <!-- Email -->
         <div>
-          <label class="block text-gray-500 font-medium mb-1">Email</label>
           <input
             type="email"
             v-model="user.email"
             required
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            placeholder="Email"
+            class="w-full px-4 py-3 text-sm border border-gray-200 rounded-lg placeholder-gray-400
+                   focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
           />
+          <p v-if="errors.email" class="text-red-500 text-xs mt-1">{{ errors.email[0] }}</p>
         </div>
 
         <!-- Password -->
         <div>
-          <label class="block text-gray-500 font-medium mb-1">Password Baru</label>
           <input
             type="password"
             v-model="password"
-            placeholder="Kosongkan jika tidak ingin mengganti"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            placeholder="Password baru (kosongkan jika tidak diganti)"
+            class="w-full px-4 py-3 text-sm border border-gray-200 rounded-lg placeholder-gray-400
+                   focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
           />
+          <p v-if="errors.password" class="text-red-500 text-xs mt-1">{{ errors.password[0] }}</p>
         </div>
 
         <!-- Konfirmasi Password -->
         <div>
-          <label class="block text-gray-500 font-medium mb-1">Konfirmasi Password</label>
           <input
             type="password"
             v-model="password_confirmation"
             placeholder="Ulangi password baru"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            class="w-full px-4 py-3 text-sm border border-gray-200 rounded-lg placeholder-gray-400
+                   focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
           />
+          <p v-if="errors.password_confirmation" class="text-red-500 text-xs mt-1">{{ errors.password_confirmation[0] }}</p>
         </div>
 
-        <div class="text-center">
+        <!-- Submit Button -->
+        <div>
           <button
             type="submit"
-            class="bg-primary text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+            class="w-full bg-primary text-white py-3 rounded-lg font-semibold flex justify-center items-center gap-2 transition"
             :disabled="loading"
           >
-            <span v-if="!loading">Simpan Perubahan</span>
+            <span v-if="!loading"><i class="fas fa-save"></i> Simpan Perubahan</span>
             <span v-else class="flex items-center gap-2">
               <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -79,6 +93,7 @@
     </div>
   </main>
 </template>
+
 
 <script>
 import axios from "axios";
@@ -97,7 +112,8 @@ export default {
       defaultAvatar: "https://via.placeholder.com/150",
       password: "",
       password_confirmation: "",
-      loading: false
+      loading: false,
+      errors: {} // <-- tambahkan ini
     };
   },
   mounted() {
@@ -107,7 +123,7 @@ export default {
     async fetchProfile() {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:8000/api/profile", {
+        const res = await axios.get("/profile", {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -132,6 +148,7 @@ export default {
     },
     async updateProfile() {
       this.loading = true;
+      this.errors = {}; // reset error sebelum submit
       try {
         const token = localStorage.getItem("token");
         const formData = new FormData();
@@ -149,7 +166,7 @@ export default {
           formData.append("image", this.selectedFile);
         }
 
-        const res = await axios.post("http://localhost:8000/api/profile", formData, {
+        const res = await axios.post("/profile", formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data"
@@ -176,16 +193,19 @@ export default {
           timerProgressBar: true
         });
       } catch (err) {
-        console.error(err.response.data);
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          icon: "error",
-          title: err.response.data.message || "Gagal memperbarui profil",
-          showConfirmButton: false,
-          timer: 1500,
-          timerProgressBar: true
-        });
+        if (err.response && err.response.status === 422) {
+          this.errors = err.response.data.errors; // <-- simpan validasi error
+        } else {
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            title: err.response?.data?.message || "Gagal memperbarui profil",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
+          });
+        }
       } finally {
         this.loading = false;
       }
@@ -195,8 +215,8 @@ export default {
 </script>
 
 <style scoped>
-  input:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-  }
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
 </style>

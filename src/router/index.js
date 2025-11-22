@@ -7,6 +7,7 @@ import ResetPassword from "../pages/ResetPassword.vue";
 import DashboardLayout from "../layouts/DashboardLayout.vue";
 import DashboardPage from "../pages/DashboardPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
+import MemberPage from "../pages/MemberPage.vue";
 
 const routes = [
   { path: "/", redirect: "/login" },
@@ -33,6 +34,7 @@ const routes = [
     children: [
       { path: "", name: "DashboardPage", component: DashboardPage },
       { path: "profile", name: "ProfilePage", component: ProfilePage }, // hapus slash
+      { path: "member", name: "MemberPage", component: MemberPage }, // hapus slash
     ]
   }
 ];

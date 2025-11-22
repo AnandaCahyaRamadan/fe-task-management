@@ -148,7 +148,7 @@ export default {
 
       this.loading = true; // mulai loading
       try {
-        const res = await axios.post("http://localhost:8000/api/register", {
+        const res = await axios.post("/register", {
           name: this.name,
           email: this.email,
           password: this.password,

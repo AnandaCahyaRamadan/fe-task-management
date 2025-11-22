@@ -89,7 +89,7 @@ export default {
       this.errors = {};
       this.loading = true; // mulai loading
       try {
-        const res = await axios.post("http://localhost:8000/api/reset-password", {
+        const res = await axios.post("/reset-password", {
           token: this.token,
           email: this.email,
           password: this.password,

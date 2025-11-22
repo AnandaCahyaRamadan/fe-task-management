@@ -111,7 +111,7 @@
         this.loading = true;
 
         try {
-          const res = await axios.post("http://localhost:8000/api/login", {
+          const res = await axios.post("/login", {
             email: this.email,
             password: this.password
           });

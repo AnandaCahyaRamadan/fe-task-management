@@ -76,7 +76,7 @@ export default {
       this.errors = {};
       this.loading = true; // mulai loading
       try {
-        const res = await axios.post("http://localhost:8000/api/forgot-password", {
+        const res = await axios.post("/forgot-password", {
           email: this.email
         });
 

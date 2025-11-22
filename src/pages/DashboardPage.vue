@@ -122,7 +122,7 @@ export default {
     async fetchTasks() {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:8000/api/tasks/by-status", {
+        const response = await axios.get("/tasks/by-status", {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (response.data.success) {

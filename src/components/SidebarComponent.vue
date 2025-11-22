@@ -12,7 +12,7 @@
       :class="mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
       <div class="relative p-4 border-b flex justify-center items-center">
-        <img src="logo.png" alt="Logo" class="w-[170px] mx-auto">
+        <img :src="require('@/assets/logo.png')" alt="Logo" class="w-[170px] mx-auto">
 
         <button 
           @click="closeMobileSidebar" 
@@ -113,7 +113,7 @@
     <div class="pl-4 pr-4 pt-4 pb-4 flex items-center">
       <div v-if="sidebarOpen">
         <div class="relative p-4 border-b flex justify-center items-center">
-          <img src="logo.png" alt="Logo" class="w-[170px] mx-auto">
+            <img :src="require('@/assets/logo.png')" alt="Logo" class="w-[170px] mx-auto">
         </div>
       </div>
     </div>
@@ -186,7 +186,7 @@
         </li>
 
         <!-- Logout -->
-        <li class="mt-auto">
+        <li class="mt-auto mb-10">
           <button 
             @click="$emit('logout')" 
             class="flex items-center w-full text-left py-2 px-4 rounded-lg text-gray-700 hover:bg-red-100 hover:text-red-500 transition-colors duration-200"
