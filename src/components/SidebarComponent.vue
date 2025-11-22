@@ -13,7 +13,7 @@
     >
       <div class="relative p-4 border-b flex justify-center items-center">
         <!-- <img :src="require('@/assets/logo.png')" alt="Logo" class="w-[170px] mx-auto"> -->
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/2367px-Vue.js_Logo_2.svg.png" alt="Logo" class="w-[130px] mx-auto">
+        <img src="https://i0.wp.com/rumahcoding.co.id/wp-content/uploads/2020/10/Vue-JS-logo-3-2.png?fit=750%2C749&ssl=1" alt="Logo" class="w-[130px] mx-auto">
 
         <button 
           @click="closeMobileSidebar" 
@@ -46,7 +46,7 @@
               <span class="font-medium">Task</span>
             </router-link>
           </li>
-          <li class="mb-2">
+          <li class="mb-2" v-if="userLogged.user_type_id == 1">
             <router-link
               to="/dashboard/member"
               class="flex items-center py-2 px-4 rounded-lg transition-colors duration-200"
@@ -104,7 +104,7 @@
       <div v-if="sidebarOpen">
         <div class="relative p-4 border-b flex justify-center items-center">
             <!-- <img :src="require('@/assets/logo.png')" alt="Logo" class="w-[170px] mx-auto"> -->
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/2367px-Vue.js_Logo_2.svg.png" alt="Logo" class="w-[130px] mx-auto">
+            <img src="https://i0.wp.com/rumahcoding.co.id/wp-content/uploads/2020/10/Vue-JS-logo-3-2.png?fit=750%2C749&ssl=1" alt="Logo" class="w-[130px] mx-auto">
         </div>
       </div>
     </div>
@@ -132,7 +132,7 @@
             <span v-if="sidebarOpen" class="font-medium">Task</span>
           </router-link>
         </li>
-        <li class="mb-2">
+        <li class="mb-2" v-if="userLogged.user_type_id == 1">
           <router-link
             to="/dashboard/member"
             class="flex items-center py-2 px-4 rounded-lg transition-colors duration-200"
@@ -188,7 +188,8 @@ export default {
   data() {
     return {
       isDesktop: window.innerWidth >= 768,
-      mobileSidebarOpen: false
+      mobileSidebarOpen: false,
+      userLogged: {}
     };
   },
   computed: {
@@ -197,7 +198,14 @@ export default {
       set(val) { this.$emit("update:modelValue", val); }
     }
   },
-  mounted() { window.addEventListener("resize", this.onResize); },
+  mounted() { 
+    window.addEventListener("resize", this.onResize);
+    const user = localStorage.getItem("user");
+    if (user) {
+      this.userLogged = JSON.parse(user);
+    }
+    console.log(this.userLogged)
+   },
   beforeUnmount() { window.removeEventListener("resize", this.onResize); },
   methods: {
     isActive(path) { return this.$route.path === path; },
