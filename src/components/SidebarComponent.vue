@@ -11,9 +11,13 @@
       class="fixed top-0 left-0 h-full w-64 bg-white shadow-md flex flex-col transform transition-transform duration-300 z-50"
       :class="mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
-      <div class="flex items-center justify-between p-4 border-b">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Logo.min.svg/2560px-Logo.min.svg.png" alt="" style="width: 120px !important;">
-        <button @click="closeMobileSidebar" class="text-gray-500 focus:outline-none">
+      <div class="relative p-4 border-b flex justify-center items-center">
+        <img src="logo.png" alt="Logo" class="w-[170px] mx-auto">
+
+        <button 
+          @click="closeMobileSidebar" 
+          class="absolute right-4 text-gray-500 focus:outline-none"
+        >
           <i class="fas fa-times text-lg"></i>
         </button>
       </div>
@@ -108,7 +112,9 @@
   >
     <div class="pl-4 pr-4 pt-4 pb-4 flex items-center">
       <div v-if="sidebarOpen">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Logo.min.svg/2560px-Logo.min.svg.png" alt="" style="width: 120px !important;">
+        <div class="relative p-4 border-b flex justify-center items-center">
+          <img src="logo.png" alt="Logo" class="w-[170px] mx-auto">
+        </div>
       </div>
     </div>
 
