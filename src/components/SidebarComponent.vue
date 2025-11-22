@@ -30,7 +30,7 @@
               class="flex items-center py-2 px-4 rounded-lg transition-colors duration-200"
               :class="isActive('/dashboard') ? 'bg-primary text-white shadow' : 'text-gray-700 hover:bg-primary/20 hover:text-primary'"
             >
-              <i class="fas fa-home mr-3" :class="isActive('/dashboard') ? 'text-white' : 'text-dark'"></i>
+              <i class="fas fa-home mr-3"></i>
               <span class="font-medium">Dashboard</span>
             </router-link>
           </li>
@@ -40,7 +40,7 @@
               class="flex items-center py-2 px-4 rounded-lg transition-colors duration-200"
               :class="isActive('/dashboard/profile') ? 'bg-primary text-white shadow' : 'text-gray-700 hover:bg-primary/20 hover:text-primary'"
             >
-              <i class="fas fa-user mr-3" :class="isActive('/dashboard/profile') ? 'text-white' : 'text-dark'"></i>
+              <i class="fas fa-user mr-3"></i>
               <span class="font-medium">Profile</span>
             </router-link>
           </li>
@@ -79,7 +79,7 @@
             class="flex items-center py-2 px-4 rounded-lg transition-colors duration-200"
             :class="isActive('/dashboard') ? 'bg-primary text-white shadow' : 'text-gray-700 hover:bg-primary/20 hover:text-primary'"
           >
-            <i class="fas fa-home mr-3" :class="isActive('/dashboard') ? 'text-white' : 'text-dark'"></i>
+            <i class="fas fa-home mr-3"></i>
             <span v-if="sidebarOpen" class="font-medium">Dashboard</span>
           </router-link>
         </li>
@@ -89,7 +89,7 @@
             class="flex items-center py-2 px-4 rounded-lg transition-colors duration-200"
             :class="isActive('/dashboard/profile') ? 'bg-primary text-white shadow' : 'text-gray-700 hover:bg-primary/20 hover:text-primary'"
           >
-            <i class="fas fa-user mr-3" :class="isActive('/dashboard/profile') ? 'text-white' : 'text-dark'"></i>
+            <i class="fas fa-user mr-3"></i>
             <span v-if="sidebarOpen" class="font-medium">Profile</span>
           </router-link>
         </li>
