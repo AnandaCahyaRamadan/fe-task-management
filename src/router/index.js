@@ -4,6 +4,7 @@ import LoginPage from "../pages/LoginPage.vue";
 import RegisterPage from "../pages/RegisterPage.vue";
 import ForgotPassword from "../pages/ForgotPassword.vue";
 import ResetPassword from "../pages/ResetPassword.vue";
+import DashboardPage from "../pages/DashboardPage.vue";
 
 const routes = [
   { path: "/", redirect: "/login" },
@@ -22,7 +23,13 @@ const routes = [
     name: "ResetPassword",
     component: ResetPassword,
     props: route => ({ token: route.query.token, email: route.query.email }),
-  }
+  },
+
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: DashboardPage,
+  },
 ];
 
 const router = createRouter({

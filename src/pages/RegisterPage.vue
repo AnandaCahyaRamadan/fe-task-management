@@ -165,7 +165,7 @@ export default {
           icon: 'success',
           title: 'Registrasi berhasil',
           showConfirmButton: false,
-          timer: 2000,
+          timer: 1000,
           timerProgressBar: true,
           background: '#00A884',
           color: '#fff'          
@@ -173,7 +173,7 @@ export default {
 
         setTimeout(() => {
           this.$router.push("/login");
-        }, 2000);
+        }, 1000);
 
       } catch (error) {
         if (error.response?.data?.errors) {
@@ -190,7 +190,7 @@ export default {
             icon: 'error',
             title: 'Error',
             showConfirmButton: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true,
             text: "Terjadi kesalahan server.",
             color: '#fff'          

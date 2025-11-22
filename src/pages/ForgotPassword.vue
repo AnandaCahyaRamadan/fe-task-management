@@ -86,7 +86,7 @@ export default {
           icon: "success",
           title: res.data.message || "Link reset dikirim ke email.",
           showConfirmButton: false,
-          timer: 2000,
+          timer: 1000,
           timerProgressBar: true
         });
 
@@ -103,7 +103,7 @@ export default {
             icon: "error",
             title: error.response?.data?.message || "Terjadi kesalahan server",
             showConfirmButton: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true
           });
         }

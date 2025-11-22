@@ -27,12 +27,14 @@
           <input
             type="email"
             v-model="email"
+            :disabled="loading"
             class="w-full px-3 py-2 rounded-lg bg-white 
                    border border-gray-200 text-text text-sm
                    focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary
                    transition placeholder-gray-400"
             placeholder="Masukkan email"
           />
+          <p v-if="errors.email" class="text-red-500 text-xs mt-1">{{ errors.email }}</p>
         </div>
 
         <!-- Password -->
@@ -41,12 +43,14 @@
           <input
             type="password"
             v-model="password"
+            :disabled="loading"
             class="w-full px-3 py-2 rounded-lg bg-white 
                    border border-gray-200 text-text text-sm
                    focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary
                    transition placeholder-gray-400"
             placeholder="Masukkan password"
           />
+          <p v-if="errors.password" class="text-red-500 text-xs mt-1">{{ errors.password }}</p>
         </div>
 
         <div class="animate-fade-slide">
@@ -60,11 +64,19 @@
 
         <!-- Tombol Login -->
         <button
+          type="submit"
           class="w-full bg-primary text-white py-2 rounded-lg 
-                 hover:bg-secondary transition font-medium tracking-wide
-                 animate-fade-slide"
+                 hover:bg-secondary transition font-medium tracking-wide flex justify-center items-center"
+          :disabled="loading"
         >
-          Login
+          <span v-if="!loading">Login</span>
+          <span v-else class="flex items-center gap-2">
+            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            </svg>
+            Loading...
+          </span>
         </button>
 
         <p class="text-center text-sm text-gray-600 mt-2 animate-fade-slide">
@@ -80,19 +92,71 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-    };
-  },
+  import axios from "axios";
+  import Swal from "sweetalert2";
 
-  methods: {
-    login() {
-      console.log("Email:", this.email);
-      console.log("Password:", this.password);
+  export default {
+    data() {
+      return {
+        email: "",
+        password: "",
+        errors: {},
+        loading: false
+      };
     },
-  },
-};
+
+    methods: {
+      async login() {
+        this.errors = {};
+        this.loading = true;
+
+        try {
+          const res = await axios.post("http://localhost:8000/api/login", {
+            email: this.email,
+            password: this.password
+          });
+
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "success",
+            title: res.data.message || "Login berhasil",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true
+          });
+
+          setTimeout(() => {
+            this.$router.push("/dashboard");
+          }, 1000);
+
+        } catch (error) {
+          if (error.response?.status === 401) {
+            this.errors.password = error.response.data.message;
+          } else if (error.response?.data?.errors) {
+            const err = error.response.data.errors;
+            this.errors = {
+              email: err.email ? err.email[0] : "",
+              password: err.password ? err.password[0] : "",
+            };
+          } else {
+            Swal.fire({
+              toast: true,
+              position: "top-end",
+              icon: "error",
+              title: "Terjadi kesalahan server",
+              showConfirmButton: false,
+              timer: 1000,
+              timerProgressBar: true
+            });
+          }
+        } finally {
+          this.loading = false;
+        }
+      }
+    }
+  };
 </script>

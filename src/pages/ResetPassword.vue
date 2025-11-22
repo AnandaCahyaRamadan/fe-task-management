@@ -102,13 +102,13 @@ export default {
           icon: "success",
           text: res.data.message || "Password berhasil direset",
           showConfirmButton: false,
-          timer: 2000,
+          timer: 1000,
           timerProgressBar: true
         });
 
         setTimeout(() => {
           this.$router.push("/login");
-        }, 2000);
+        }, 1000);
 
       } catch (error) {
         if (error.response?.data?.errors) {
@@ -124,7 +124,7 @@ export default {
             icon: "error",
             text: error.response?.data?.message || "Terjadi kesalahan server",
             showConfirmButton: false,
-            timer: 2000,
+            timer: 1000,
             timerProgressBar: true
           });
         }
