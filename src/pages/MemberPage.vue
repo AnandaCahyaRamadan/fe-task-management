@@ -131,7 +131,7 @@
     </transition>
 
     <!-- Table Member -->
-    <div class="bg-white shadow-lg rounded-xl p-6 max-w-5xl mx-auto mt-6">
+    <div class="bg-white shadow-lg rounded-xl p-6 mx-auto mt-6">
       <h3 class="text-lg font-semibold mb-4">List Member</h3>
       <div class="overflow-x-auto">
         <table class="min-w-full border border-gray-200">
@@ -155,13 +155,13 @@
                 <td class="p-3 border space-x-2 flex">
                     <button
                     @click="openModal(member)"
-                    class="bg-primary text-white font-semibold px-6 py-2 rounded-xl transition flex items-center gap-2"
+                    class="text-primary font-semibold py-2 rounded-xl transition flex items-center gap-2"
                     >
                     <i class="fas fa-edit"></i>
                     </button>
                     <button
                     @click="deleteMember(member.id)"
-                    class="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-xl transition flex items-center gap-2"
+                    class="text-red-500 font-semibold py-2 rounded-xl transition flex items-center gap-2"
                     :disabled="deleteLoading"
                     >
                     <i v-if="!deleteLoading" class="fas fa-trash"></i>
