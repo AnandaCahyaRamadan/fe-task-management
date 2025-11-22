@@ -1,12 +1,12 @@
 <template>
   <div class="flex h-screen bg-gray-100 font-jakarta overflow-hidden">
-    <SidebarComponent v-model="sidebarOpen" ref="sidebar" @logout="logout" />
+    <SidebarComponent v-model="sidebarOpen" ref="sidebar" />
 
     <div class="flex-1 flex flex-col overflow-hidden">
       <HeaderComponent
         :user="user"
         :title="'Dashboard'"
-        @toggle-sidebar="toggleSidebar"
+        @toggle-sidebar="toggleSidebar" @logout="logout"
       />
       <main class="flex-1 p-4 overflow-auto transition-all duration-300">
         <router-view />

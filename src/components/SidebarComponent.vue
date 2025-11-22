@@ -12,7 +12,8 @@
       :class="mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
       <div class="relative p-4 border-b flex justify-center items-center">
-        <img :src="require('@/assets/logo.png')" alt="Logo" class="w-[170px] mx-auto">
+        <!-- <img :src="require('@/assets/logo.png')" alt="Logo" class="w-[170px] mx-auto"> -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/2367px-Vue.js_Logo_2.svg.png" alt="Logo" class="w-[130px] mx-auto">
 
         <button 
           @click="closeMobileSidebar" 
@@ -88,17 +89,6 @@
               <span class="font-medium">User</span>
             </router-link>
           </li>
-
-          <!-- Logout -->
-          <li class="mt-auto">
-            <button
-              @click="$emit('logout')"
-              class="flex items-center w-full text-left py-2 px-4 rounded-lg text-gray-700 hover:bg-red-100 hover:text-red-500 transition-colors duration-200"
-            >
-              <i class="fas fa-sign-out-alt mr-3"></i>
-              <span class="font-medium">Logout</span>
-            </button>
-          </li>
         </ul>
       </nav>
     </aside>
@@ -113,7 +103,8 @@
     <div class="pl-4 pr-4 pt-4 pb-4 flex items-center">
       <div v-if="sidebarOpen">
         <div class="relative p-4 border-b flex justify-center items-center">
-            <img :src="require('@/assets/logo.png')" alt="Logo" class="w-[170px] mx-auto">
+            <!-- <img :src="require('@/assets/logo.png')" alt="Logo" class="w-[170px] mx-auto"> -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/2367px-Vue.js_Logo_2.svg.png" alt="Logo" class="w-[130px] mx-auto">
         </div>
       </div>
     </div>
@@ -183,17 +174,6 @@
             <i class="fas fa-user-cog mr-3"></i>
             <span v-if="sidebarOpen" class="font-medium">User</span>
           </router-link>
-        </li>
-
-        <!-- Logout -->
-        <li class="mt-auto mb-10">
-          <button 
-            @click="$emit('logout')" 
-            class="flex items-center w-full text-left py-2 px-4 rounded-lg text-gray-700 hover:bg-red-100 hover:text-red-500 transition-colors duration-200"
-          >
-            <i class="fas fa-sign-out-alt mr-3"></i>
-            <span v-if="sidebarOpen" class="font-medium">Logout</span>
-          </button>
         </li>
       </ul>
     </nav>
