@@ -25,6 +25,7 @@
           <input
             type="text"
             v-model="name"
+            :disabled="loading"
             class="w-full px-3 py-2 rounded-lg bg-white border text-sm
                    transition placeholder-gray-400
                    border-gray-200 focus:outline-none
@@ -42,6 +43,7 @@
           <input
             type="email"
             v-model="email"
+            :disabled="loading"
             class="w-full px-3 py-2 rounded-lg bg-white border text-sm
                    transition placeholder-gray-400
                    border-gray-200 focus:outline-none
@@ -59,6 +61,7 @@
           <input
             type="password"
             v-model="password"
+            :disabled="loading"
             class="w-full px-3 py-2 rounded-lg bg-white border text-sm
                    transition placeholder-gray-400
                    border-gray-200 focus:outline-none
@@ -76,6 +79,7 @@
           <input
             type="password"
             v-model="confirmPassword"
+            :disabled="loading"
             class="w-full px-3 py-2 rounded-lg bg-white border text-sm
                    transition placeholder-gray-400
                    border-gray-200 focus:outline-none
@@ -89,10 +93,19 @@
 
         <!-- Tombol -->
         <button
+          type="submit"
           class="w-full bg-primary text-white py-2 rounded-lg 
-                 hover:bg-secondary transition font-medium tracking-wide"
+                 hover:bg-secondary transition font-medium tracking-wide flex justify-center items-center"
+          :disabled="loading"
         >
-          Daftar
+          <span v-if="!loading">Daftar</span>
+          <span v-else class="flex items-center gap-2">
+            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            </svg>
+            Loading...
+          </span>
         </button>
 
         <p class="text-center text-sm text-gray-600 mt-2">
@@ -121,18 +134,19 @@ export default {
       role_id: 2,
       user_type_id: 2,
       errors: {},
+      loading: false
     };
   },
 
   methods: {
     async register() {
       this.errors = {};
-
       if (this.password !== this.confirmPassword) {
         this.errors.confirmPassword = "Konfirmasi password tidak cocok.";
         return;
       }
 
+      this.loading = true; // mulai loading
       try {
         const res = await axios.post("http://localhost:8000/api/register", {
           name: this.name,
@@ -171,17 +185,19 @@ export default {
           };
         } else {
           Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
-          title: 'Error',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          text: "Terjadi kesalahan server.",
-          color: '#fff'          
-        });
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Error',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            text: "Terjadi kesalahan server.",
+            color: '#fff'          
+          });
         }
+      } finally {
+        this.loading = false; // selesai loading
       }
     },
   },
