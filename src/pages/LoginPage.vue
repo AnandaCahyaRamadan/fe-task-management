@@ -22,7 +22,7 @@
       <form @submit.prevent="login" class="space-y-5">
 
         <!-- Email -->
-        <div class="animate-fade-slide" style="animation-delay: 0.1s;">
+        <div class="animate-fade-slide">
           <label class="block text-sm mb-1 text-text">Email</label>
           <input
             type="email"
@@ -36,7 +36,7 @@
         </div>
 
         <!-- Password -->
-        <div class="animate-fade-slide" style="animation-delay: 0.2s;">
+        <div class="animate-fade-slide">
           <label class="block text-sm mb-1 text-text">Password</label>
           <input
             type="password"
@@ -49,7 +49,7 @@
           />
         </div>
 
-        <div class="animate-fade-slide" style="animation-delay: 0.25s;">
+        <div class="animate-fade-slide">
           <router-link 
             to="/forgot-password" 
             class="block text-right text-sm text-primary font-medium hover:underline transition"
@@ -63,13 +63,11 @@
           class="w-full bg-primary text-white py-2 rounded-lg 
                  hover:bg-secondary transition font-medium tracking-wide
                  animate-fade-slide"
-          style="animation-delay: 0.3s;"
         >
           Login
         </button>
 
-        <p class="text-center text-sm text-gray-600 mt-2 animate-fade-slide"
-           style="animation-delay: 0.4s;">
+        <p class="text-center text-sm text-gray-600 mt-2 animate-fade-slide">
           Belum punya akun?
           <router-link class="text-primary font-medium hover:underline" to="/register">
             Daftar

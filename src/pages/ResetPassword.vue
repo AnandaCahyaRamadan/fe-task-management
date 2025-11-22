@@ -21,7 +21,7 @@
       <form @submit.prevent="resetPassword" class="space-y-5">
 
         <!-- Password Baru -->
-        <div class="animate-fade-slide" style="animation-delay: 0.1s;">
+        <div class="animate-fade-slide">
           <label class="block text-sm mb-1 text-text">Password Baru</label>
           <input
             type="password"
@@ -35,7 +35,7 @@
         </div>
 
         <!-- Konfirmasi Password -->
-        <div class="animate-fade-slide" style="animation-delay: 0.2s;">
+        <div class="animate-fade-slide">
           <label class="block text-sm mb-1 text-text">Konfirmasi Password</label>
           <input
             type="password"
@@ -53,14 +53,12 @@
           class="w-full bg-primary text-white py-2 rounded-lg 
                  hover:bg-secondary transition font-medium tracking-wide
                  animate-fade-slide"
-          style="animation-delay: 0.3s;"
         >
           Simpan Password Baru
         </button>
 
         <!-- Balik -->
-        <p class="text-center text-sm text-gray-600 mt-2 animate-fade-slide"
-           style="animation-delay: 0.4s;">
+        <p class="text-center text-sm text-gray-600 mt-2 animate-fade-slide">
           Kembali ke
           <router-link class="text-primary font-medium hover:underline" to="/login">
             Login

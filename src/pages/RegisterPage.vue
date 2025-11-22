@@ -21,7 +21,7 @@
       <form @submit.prevent="register" class="space-y-5">
 
         <!-- Name -->
-        <div class="animate-fade-slide" style="animation-delay: 0.1s;">
+        <div class="animate-fade-slide">
           <label class="block text-sm mb-1 text-text">Nama Lengkap</label>
           <input
             type="text"
@@ -35,7 +35,7 @@
         </div>
 
         <!-- Email -->
-        <div class="animate-fade-slide" style="animation-delay: 0.2s;">
+        <div class="animate-fade-slide">
           <label class="block text-sm mb-1 text-text">Email</label>
           <input
             type="email"
@@ -49,7 +49,7 @@
         </div>
 
         <!-- Password -->
-        <div class="animate-fade-slide" style="animation-delay: 0.3s;">
+        <div class="animate-fade-slide">
           <label class="block text-sm mb-1 text-text">Password</label>
           <input
             type="password"
@@ -63,7 +63,7 @@
         </div>
 
         <!-- Confirm Password -->
-        <div class="animate-fade-slide" style="animation-delay: 0.35s;">
+        <div class="animate-fade-slide">
           <label class="block text-sm mb-1 text-text">Konfirmasi Password</label>
           <input
             type="password"
@@ -81,7 +81,6 @@
           class="w-full bg-primary text-white py-2 rounded-lg 
                  hover:bg-secondary transition font-medium tracking-wide
                  animate-fade-slide"
-          style="animation-delay: 0.45s;"
         >
           Daftar
         </button>
@@ -89,7 +88,6 @@
         <!-- Link ke login -->
         <p
           class="text-center text-sm text-gray-600 mt-2 animate-fade-slide"
-          style="animation-delay: 0.55s;"
         >
           Sudah punya akun?
           <router-link class="text-primary font-medium hover:underline" to="/login">
