@@ -9,20 +9,23 @@
              animate-fade-slide"
     >
 
-      <!-- Dekorasi kecil -->
+      <!-- Dekor -->
       <div class="flex justify-center mb-3">
         <div class="h-2 w-10 bg-primary rounded-full opacity-90"></div>
       </div>
 
-      <!-- Judul -->
       <h2 class="text-2xl font-bold text-center mb-6 text-primary tracking-wide">
-        Masuk
+        Lupa Password
       </h2>
 
-      <form @submit.prevent="login" class="space-y-5">
+      <p class="text-center text-gray-600 text-sm mb-6 animate-fade-slide" style="animation-delay: 0.1s;">
+        Masukkan email yang terdaftar. Kami akan mengirimkan link reset password.
+      </p>
+
+      <form @submit.prevent="submitEmail" class="space-y-5">
 
         <!-- Email -->
-        <div class="animate-fade-slide" style="animation-delay: 0.1s;">
+        <div class="animate-fade-slide" style="animation-delay: 0.2s;">
           <label class="block text-sm mb-1 text-text">Email</label>
           <input
             type="email"
@@ -35,44 +38,21 @@
           />
         </div>
 
-        <!-- Password -->
-        <div class="animate-fade-slide" style="animation-delay: 0.2s;">
-          <label class="block text-sm mb-1 text-text">Password</label>
-          <input
-            type="password"
-            v-model="password"
-            class="w-full px-3 py-2 rounded-lg bg-white 
-                   border border-gray-200 text-text text-sm
-                   focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary
-                   transition placeholder-gray-400"
-            placeholder="Masukkan password"
-          />
-        </div>
-
-        <div class="animate-fade-slide" style="animation-delay: 0.25s;">
-          <router-link 
-            to="/forgot-password" 
-            class="block text-right text-sm text-primary font-medium hover:underline transition"
-          >
-            Lupa password?
-          </router-link>
-        </div>
-
-        <!-- Tombol Login -->
+        <!-- Tombol -->
         <button
           class="w-full bg-primary text-white py-2 rounded-lg 
                  hover:bg-secondary transition font-medium tracking-wide
                  animate-fade-slide"
           style="animation-delay: 0.3s;"
         >
-          Login
+          Kirim Link Reset
         </button>
 
         <p class="text-center text-sm text-gray-600 mt-2 animate-fade-slide"
            style="animation-delay: 0.4s;">
-          Belum punya akun?
-          <router-link class="text-primary font-medium hover:underline" to="/register">
-            Daftar
+          Kembali ke
+          <router-link class="text-primary font-medium hover:underline" to="/login">
+            Login
           </router-link>
         </p>
 
@@ -86,14 +66,12 @@ export default {
   data() {
     return {
       email: "",
-      password: "",
     };
   },
 
   methods: {
-    login() {
-      console.log("Email:", this.email);
-      console.log("Password:", this.password);
+    submitEmail() {
+      console.log("Email reset:", this.email);
     },
   },
 };
