@@ -4,7 +4,9 @@ import LoginPage from "../pages/LoginPage.vue";
 import RegisterPage from "../pages/RegisterPage.vue";
 import ForgotPassword from "../pages/ForgotPassword.vue";
 import ResetPassword from "../pages/ResetPassword.vue";
+import DashboardLayout from "../layouts/DashboardLayout.vue";
 import DashboardPage from "../pages/DashboardPage.vue";
+import ProfilePage from "../pages/ProfilePage.vue";
 
 const routes = [
   { path: "/", redirect: "/login" },
@@ -27,9 +29,12 @@ const routes = [
 
   {
     path: "/dashboard",
-    name: "Dashboard",
-    component: DashboardPage,
-  },
+    component: DashboardLayout, // layout utama
+    children: [
+      { path: "", name: "DashboardPage", component: DashboardPage },
+      { path: "/profile", name: "ProfilePage", component: ProfilePage },
+    ]
+  }
 ];
 
 const router = createRouter({
