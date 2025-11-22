@@ -32,7 +32,7 @@ const routes = [
     component: DashboardLayout, // layout utama
     children: [
       { path: "", name: "DashboardPage", component: DashboardPage },
-      { path: "/profile", name: "ProfilePage", component: ProfilePage },
+      { path: "profile", name: "ProfilePage", component: ProfilePage }, // hapus slash
     ]
   }
 ];
