@@ -2,7 +2,6 @@
   <main class="flex-1 p-6 overflow-auto bg-gray-100">
     <!-- Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-      <!-- Total Task -->
       <div
         class="relative bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-lg rounded-xl p-6 hover:scale-105 transform transition-all duration-300"
       >
@@ -13,7 +12,6 @@
         <p class="text-2xl font-bold">{{ totalTasks }}</p>
       </div>
 
-      <!-- Pending -->
       <div
         class="relative bg-gradient-to-r from-yellow-400 to-yellow-300 text-white shadow-lg rounded-xl p-6 hover:scale-105 transform transition-all duration-300"
       >
@@ -24,7 +22,6 @@
         <p class="text-2xl font-bold">{{ tasks.pending.length }}</p>
       </div>
 
-      <!-- In Progress -->
       <div
         class="relative bg-gradient-to-r from-purple-500 to-purple-400 text-white shadow-lg rounded-xl p-6 hover:scale-105 transform transition-all duration-300"
       >
@@ -35,7 +32,6 @@
         <p class="text-2xl font-bold">{{ tasks.in_progress.length }}</p>
       </div>
 
-      <!-- Selesai -->
       <div
         class="relative bg-gradient-to-r from-green-600 to-green-500 text-white shadow-lg rounded-xl p-6 hover:scale-105 transform transition-all duration-300"
       >
@@ -47,64 +43,56 @@
       </div>
     </div>
 
-    <!-- Tabel Task -->
+    <!-- DataTable -->
     <div class="bg-white shadow-lg rounded-xl p-6">
       <h3 class="text-lg font-semibold mb-4">List Task</h3>
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 rounded-lg">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul Task</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Dibuat</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deadline</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-100">
-            <tr
-              v-for="(task, index) in allTasks"
-              :key="task.id"
-              class="hover:bg-gray-50 transition-colors"
-            >
-              <td class="px-6 py-4 whitespace-nowrap">{{ index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ task.title }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span
-                  class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
-                  :class="{
-                    'bg-yellow-100 text-yellow-800': task.status === 'pending',
-                    'bg-purple-100 text-purple-800': task.status === 'in_progress',
-                    'bg-green-100 text-green-800': task.status === 'completed'
-                  }"
-                >
-                  {{ task.status }}
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ formatDate(task.created_at) }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ formatDate(task.deadline) }}</td>
-            </tr>
-            <tr v-if="allTasks.length === 0">
-              <td colspan="6" class="text-center py-4 text-gray-400">Tidak ada task</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="min-w-[700px]"><!-- minimal width agar scroll muncul jika layar kecil -->
+          <VueGoodTable
+            :columns="columns"
+            :rows="allTasks"
+            :search-options="{ enabled: true }"
+            :pagination-options="{ enabled: true, perPage: 5 }"
+          >
+            <template #table-row="{ column, row }">
+              <span v-if="column.field === 'status'"
+                    :class="{
+                      'bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full': row.status === 'pending',
+                      'bg-purple-100 text-purple-800 px-2 py-1 rounded-full': row.status === 'in_progress',
+                      'bg-green-100 text-green-800 px-2 py-1 rounded-full': row.status === 'completed'
+                    }">
+                {{ row.status }}
+              </span>
+              <span v-else-if="column.field === 'created_at'">{{ formatDate(row.created_at) }}</span>
+              <span v-else-if="column.field === 'deadline'">{{ formatDate(row.deadline) }}</span>
+              <span v-else-if="column.field === 'assigned_user'">{{ row.assigned_user_name }}</span>
+              <span v-else>{{ row[column.field] }}</span>
+            </template>
+          </VueGoodTable>
+        </div>
       </div>
     </div>
   </main>
 </template>
 
 <script>
+import { VueGoodTable } from "vue-good-table-next";
+import "vue-good-table-next/dist/vue-good-table-next.css";
 import axios from "axios";
 
 export default {
+  components: { VueGoodTable },
   data() {
     return {
-      tasks: {
-        pending: [],
-        in_progress: [],
-        completed: []
-      }
+      tasks: { pending: [], in_progress: [], completed: [] },
+      columns: [
+        { label: "No", field: "index", sortable: false },
+        { label: "Judul Task", field: "title", sortable: true },
+        { label: "Status", field: "status", sortable: true },
+        { label: "Assigned User", field: "assigned_user", sortable: true },
+        { label: "Tanggal Dibuat", field: "created_at", sortable: true },
+        { label: "Deadline", field: "deadline", sortable: true },
+      ],
     };
   },
   computed: {
@@ -112,8 +100,12 @@ export default {
       return this.tasks.pending.length + this.tasks.in_progress.length + this.tasks.completed.length;
     },
     allTasks() {
-      return [...this.tasks.pending, ...this.tasks.in_progress, ...this.tasks.completed];
-    }
+      return [...this.tasks.pending, ...this.tasks.in_progress, ...this.tasks.completed].map((task, i) => ({
+        ...task,
+        index: i + 1,
+        assigned_user_name: task.assigned_user ? task.assigned_user.name : "-",
+      }));
+    },
   },
   mounted() {
     this.fetchTasks();
@@ -126,9 +118,9 @@ export default {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (response.data.success) {
-          this.tasks.pending = response.data.data.pending;
-          this.tasks.in_progress = response.data.data.in_progress;
-          this.tasks.completed = response.data.data.completed;
+          this.tasks.pending = response.data.data.pending || [];
+          this.tasks.in_progress = response.data.data.in_progress || [];
+          this.tasks.completed = response.data.data.completed || [];
         }
       } catch (error) {
         console.error("Gagal ambil tasks:", error);
@@ -144,8 +136,8 @@ export default {
         hour: "2-digit",
         minute: "2-digit",
       }).format(date);
-    }
-  }
+    },
+  },
 };
 </script>
 

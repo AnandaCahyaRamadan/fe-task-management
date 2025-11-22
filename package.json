@@ -19,6 +19,7 @@
     "primevue": "^4.4.1",
     "sweetalert2": "^11.26.3",
     "vue": "^3.2.13",
+    "vue-good-table-next": "^0.2.2",
     "vue-router": "^4.6.3",
     "vue3-easy-data-table": "^1.5.47"
   },
