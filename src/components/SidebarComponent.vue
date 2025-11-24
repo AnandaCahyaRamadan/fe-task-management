@@ -126,7 +126,7 @@
           <router-link
             to="/dashboard/task"
             class="flex items-center py-2 px-4 rounded-lg transition-colors duration-200"
-            :class="isActive('/dashboard/task') ? 'bg-primary text-white shadow' : 'text-gray-700 hover:bg-primary/20 hover:text-primary'"
+            :class="isActive('/dashboard/task*') ? 'bg-primary text-white shadow' : 'text-gray-700 hover:bg-primary/20 hover:text-primary'"
           >
             <i class="fas fa-tasks mr-3"></i>
             <span v-if="sidebarOpen" class="font-medium">Task</span>
@@ -210,8 +210,17 @@ export default {
    },
   beforeUnmount() { window.removeEventListener("resize", this.onResize); },
   methods: {
-    isActive(path) { return this.$route.path === path; },
-    onResize() { this.isDesktop = window.innerWidth >= 768; if(this.isDesktop) this.sidebarOpen = true; },
+  isActive(path) {
+    if (path.endsWith("*")) {
+      const prefix = path.slice(0, -1); // hapus *
+      return this.$route.path.startsWith(prefix);
+    }
+    return this.$route.path === path;
+    },
+    onResize() { 
+      this.isDesktop = window.innerWidth >= 768; 
+      if(this.isDesktop) this.sidebarOpen = true; 
+    },
     openMobileSidebar() { this.mobileSidebarOpen = true; },
     closeMobileSidebar() { this.mobileSidebarOpen = false; }
   }

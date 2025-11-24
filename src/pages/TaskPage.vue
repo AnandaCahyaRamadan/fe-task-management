@@ -1,11 +1,11 @@
 <template>
   <div class="p-6">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-2xl font-bold">Daftar Task</h2>
+    <div class="flex justify-between items-center">
+      <h2 class="text-2xl font-bold mb-6">Daftar Task</h2>
       <template v-if="userLogged.parent == null">
           <button
             @click="openModal()"
-            class="bg-primary text-white px-6 py-2 rounded-xl font-semibold flex items-center gap-2"
+            class="bg-primary text-white font-semibold px-6 py-2 rounded-xl transition flex items-center gap-2 mb-6"
           >
             <i class="fas fa-plus"></i> Tambah Task
           </button>
@@ -99,7 +99,7 @@
     </transition>
 
     <!-- Table -->
-    <div class="bg-white shadow-lg rounded-xl p-6">
+    <div class="bg-white shadow-lg rounded-xl p-6 mt-6">
       <h3 class="text-lg font-semibold mb-4">List Task</h3>
 
       <vue-good-table :columns="columns" :rows="tasksWithIndex"
@@ -126,6 +126,9 @@
             <button class="text-primary px-1" @click="editTask(row)">
               <i class="fas fa-edit"></i>
             </button>
+            <button class="text-blue-500 px-1" @click="detailTask(row.id)">
+              <i class="fas fa-eye"></i>
+            </button>
             <button class="text-red-500 px-1" @click="deleteTask(row.id)">
               <i class="fas fa-trash"></i>
             </button>
@@ -143,6 +146,7 @@ import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { VueGoodTable } from "vue-good-table-next";
+import router from "../router";
 
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
@@ -296,6 +300,11 @@ export default {
         }
         console.log(userLogged.value);
     });
+
+    const detailTask = (id) => {
+        router.push(`/dashboard/tasks/${id}/detail`);
+    };
+
     return {
       tasks,
       assignable,
@@ -311,7 +320,8 @@ export default {
       submitTask,
       deleteTask,
       editTask,
-      userLogged
+      userLogged,
+      detailTask
     };
   },
 };
