@@ -10,6 +10,7 @@ import ProfilePage from "../pages/ProfilePage.vue";
 import MemberPage from "../pages/MemberPage.vue";
 import RolePage from "../pages/RolePage.vue";
 import UserPage from "../pages/UserPage.vue";
+import TaskPage from "../pages/TaskPage.vue";
 
 const routes = [
   { path: "/", redirect: "/login" },
@@ -39,6 +40,7 @@ const routes = [
       { path: "member", name: "MemberPage", component: MemberPage },
       { path: "role", name: "RolePage", component: RolePage },
       { path: "user", name: "UserPage", component: UserPage },
+      { path: "task", name: "TaskPage", component: TaskPage },
     ]
   }
 ];
