@@ -154,27 +154,29 @@
         </li>
 
         <!-- Admin Menu -->
-        <li class="mt-4 mb-2 text-gray-400 uppercase text-xs px-4" v-if="sidebarOpen">Admin</li>
-        <li class="mb-2">
-          <router-link
-            to="/dashboard/role"
-            class="flex items-center py-2 px-4 rounded-lg transition-colors duration-200"
-            :class="isActive('/dashboard/role') ? 'bg-primary text-white shadow' : 'text-gray-700 hover:bg-primary/20 hover:text-primary'"
-          >
-            <i class="fas fa-user-shield mr-3"></i>
-            <span v-if="sidebarOpen" class="font-medium">Role</span>
-          </router-link>
-        </li>
-        <li class="mb-2">
-          <router-link
-            to="/dashboard/user"
-            class="flex items-center py-2 px-4 rounded-lg transition-colors duration-200"
-            :class="isActive('/dashboard/user') ? 'bg-primary text-white shadow' : 'text-gray-700 hover:bg-primary/20 hover:text-primary'"
-          >
-            <i class="fas fa-user-cog mr-3"></i>
-            <span v-if="sidebarOpen" class="font-medium">User</span>
-          </router-link>
-        </li>
+        <template v-if="userLogged && userLogged.role && userLogged.role.name === 'Admin'">
+          <li class="mt-4 mb-2 text-gray-400 uppercase text-xs px-4" v-if="sidebarOpen">Admin</li>
+          <li class="mb-2">
+            <router-link
+              to="/dashboard/role"
+              class="flex items-center py-2 px-4 rounded-lg transition-colors duration-200"
+              :class="isActive('/dashboard/role') ? 'bg-primary text-white shadow' : 'text-gray-700 hover:bg-primary/20 hover:text-primary'"
+            >
+              <i class="fas fa-user-shield mr-3"></i>
+              <span v-if="sidebarOpen" class="font-medium">Role</span>
+            </router-link>
+          </li>
+          <li class="mb-2">
+            <router-link
+              to="/dashboard/user"
+              class="flex items-center py-2 px-4 rounded-lg transition-colors duration-200"
+              :class="isActive('/dashboard/user') ? 'bg-primary text-white shadow' : 'text-gray-700 hover:bg-primary/20 hover:text-primary'"
+            >
+              <i class="fas fa-user-cog mr-3"></i>
+              <span v-if="sidebarOpen" class="font-medium">User</span>
+            </router-link>
+          </li>
+        </template>
       </ul>
     </nav>
   </aside>
