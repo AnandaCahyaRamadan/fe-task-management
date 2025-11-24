@@ -8,6 +8,7 @@ import DashboardLayout from "../layouts/DashboardLayout.vue";
 import DashboardPage from "../pages/DashboardPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
 import MemberPage from "../pages/MemberPage.vue";
+import RolePage from "../pages/RolePage.vue";
 
 const routes = [
   { path: "/", redirect: "/login" },
@@ -35,6 +36,7 @@ const routes = [
       { path: "", name: "DashboardPage", component: DashboardPage },
       { path: "profile", name: "ProfilePage", component: ProfilePage }, // hapus slash
       { path: "member", name: "MemberPage", component: MemberPage }, // hapus slash
+      { path: "role", name: "RolePage", component: RolePage }, // hapus slash
     ]
   }
 ];
