@@ -9,6 +9,7 @@ import DashboardPage from "../pages/DashboardPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
 import MemberPage from "../pages/MemberPage.vue";
 import RolePage from "../pages/RolePage.vue";
+import UserPage from "../pages/UserPage.vue";
 
 const routes = [
   { path: "/", redirect: "/login" },
@@ -34,9 +35,10 @@ const routes = [
     component: DashboardLayout, // layout utama
     children: [
       { path: "", name: "DashboardPage", component: DashboardPage },
-      { path: "profile", name: "ProfilePage", component: ProfilePage }, // hapus slash
-      { path: "member", name: "MemberPage", component: MemberPage }, // hapus slash
-      { path: "role", name: "RolePage", component: RolePage }, // hapus slash
+      { path: "profile", name: "ProfilePage", component: ProfilePage },
+      { path: "member", name: "MemberPage", component: MemberPage },
+      { path: "role", name: "RolePage", component: RolePage },
+      { path: "user", name: "UserPage", component: UserPage },
     ]
   }
 ];
