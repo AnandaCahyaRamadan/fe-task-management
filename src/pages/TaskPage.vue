@@ -121,6 +121,13 @@
             </span>
           </span>
 
+          <span v-else-if="column.field === 'deadline'" 
+                :class="{
+                  'bg-red-100 text-red-800 px-2 py-1 rounded-full': new Date(row.deadline) < new Date()
+                }">
+            {{ formatDate(row.deadline) }}
+          </span>
+
           <!-- ACTION BUTTON -->
           <span v-if="column.field === 'actions'">
             <button class="text-primary px-1" @click="editTask(row)">
@@ -305,6 +312,17 @@ export default {
         router.push(`/dashboard/tasks/${id}/detail`);
     };
 
+    const formatDate  = (dateStr) => {
+      if (!dateStr) return "-";
+      const date = new Date(dateStr);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = date.toLocaleString("id-ID", { month: "long" });
+      const year = date.getFullYear();
+      const hour = String(date.getHours()).padStart(2, "0");
+      const minute = String(date.getMinutes()).padStart(2, "0");
+      return `${day} ${month} ${year}, ${hour}:${minute}`;
+    }
+
     return {
       tasks,
       assignable,
@@ -321,7 +339,8 @@ export default {
       deleteTask,
       editTask,
       userLogged,
-      detailTask
+      detailTask,
+      formatDate
     };
   },
 };

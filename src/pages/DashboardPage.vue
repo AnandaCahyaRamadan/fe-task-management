@@ -64,7 +64,12 @@
                 {{ row.status }}
               </span>
               <span v-else-if="column.field === 'created_at'">{{ formatDate(row.created_at) }}</span>
-              <span v-else-if="column.field === 'deadline'">{{ formatDate(row.deadline) }}</span>
+              <span v-else-if="column.field === 'deadline'" 
+                    :class="{
+                      'bg-red-100 text-red-800 px-2 py-1 rounded-full': new Date(row.deadline) < new Date()
+                    }">
+                {{ formatDate(row.deadline) }}
+              </span>
               <span v-else-if="column.field === 'assigned_user'">{{ row.assigned_user_name }}</span>
               <span v-else>{{ row[column.field] }}</span>
             </template>
@@ -129,14 +134,13 @@ export default {
     formatDate(dateStr) {
       if (!dateStr) return "-";
       const date = new Date(dateStr);
-      return new Intl.DateTimeFormat("id-ID", {
-        year: "numeric",
-        month: "long",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(date);
-    },
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = date.toLocaleString("id-ID", { month: "long" });
+      const year = date.getFullYear();
+      const hour = String(date.getHours()).padStart(2, "0");
+      const minute = String(date.getMinutes()).padStart(2, "0");
+      return `${day} ${month} ${year}, ${hour}:${minute}`;
+    }
   },
 };
 </script>
