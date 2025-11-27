@@ -12,9 +12,10 @@ import RolePage from "../pages/RolePage.vue";
 import UserPage from "../pages/UserPage.vue";
 import TaskPage from "../pages/TaskPage.vue";
 import TaskDetailPage from "@/pages/TaskDetailPage.vue";
+import LandingPage from "@/pages/LandingPage.vue";
 
 const routes = [
-  { path: "/", redirect: "/login" },
+  { path: "/", name: "Landing Page", component: LandingPage },
 
   { path: "/login", name: "Login", component: LoginPage },
   { path: "/register", name: "Register", component: RegisterPage },
