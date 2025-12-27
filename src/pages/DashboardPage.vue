@@ -60,7 +60,7 @@
     <div class="bg-white shadow-lg rounded-xl p-6">
       <h3 class="text-lg font-semibold mb-4">List Task</h3>
       <div class="overflow-x-auto">
-        <div class="min-w-[700px]"><!-- minimal width agar scroll muncul jika layar kecil -->
+        <div class="min-w-max">
           <VueGoodTable
             :columns="columns"
             :rows="allTasks"
