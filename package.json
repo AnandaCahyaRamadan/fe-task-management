@@ -11,6 +11,7 @@
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@kyvg/vue3-notification": "^3.4.2",
     "axios": "^1.13.2",
+    "chart.js": "^4.5.1",
     "core-js": "^3.8.3",
     "datatables.net": "^2.3.5",
     "datatables.net-dt": "^2.3.5",

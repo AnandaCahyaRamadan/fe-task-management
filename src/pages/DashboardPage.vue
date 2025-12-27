@@ -43,6 +43,19 @@
       </div>
     </div>
 
+    <!-- Charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="bg-white shadow-lg rounded-xl p-6">
+        <h3 class="text-lg font-semibold mb-4">Statistik Status Task</h3>
+        <canvas id="statusChart"></canvas>
+      </div>
+
+      <div class="bg-white shadow-lg rounded-xl p-6">
+        <h3 class="text-lg font-semibold mb-4">Task per Hari</h3>
+        <canvas id="dailyChart"></canvas>
+      </div>
+    </div>
+
     <!-- DataTable -->
     <div class="bg-white shadow-lg rounded-xl p-6">
       <h3 class="text-lg font-semibold mb-4">List Task</h3>
@@ -84,6 +97,8 @@
 import { VueGoodTable } from "vue-good-table-next";
 import "vue-good-table-next/dist/vue-good-table-next.css";
 import axios from "axios";
+import { Chart, registerables } from "chart.js";
+Chart.register(...registerables);
 
 export default {
   components: { VueGoodTable },
@@ -127,6 +142,8 @@ export default {
           this.tasks.in_progress = response.data.data.in_progress || [];
           this.tasks.completed = response.data.data.completed || [];
         }
+          this.renderStatusChart();
+          this.renderDailyChart();          
       } catch (error) {
         console.error("Gagal ambil tasks:", error);
       }
@@ -140,7 +157,65 @@ export default {
       const hour = String(date.getHours()).padStart(2, "0");
       const minute = String(date.getMinutes()).padStart(2, "0");
       return `${day} ${month} ${year}, ${hour}:${minute}`;
-    }
+    },
+    renderStatusChart() {
+      const ctx = document.getElementById("statusChart");
+
+      new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: ["Pending", "In Progress", "Completed"],
+          datasets: [{
+            data: [
+              this.tasks.pending.length,
+              this.tasks.in_progress.length,
+              this.tasks.completed.length
+            ],
+            backgroundColor: ["#facc15", "#a855f7", "#22c55e"]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: "bottom" }
+          }
+        }
+      });
+    },
+
+    renderDailyChart() {
+      const allTasks = [
+        ...this.tasks.pending,
+        ...this.tasks.in_progress,
+        ...this.tasks.completed
+      ];
+
+      const grouped = {};
+      allTasks.forEach(task => {
+        const date = new Date(task.created_at).toLocaleDateString("id-ID");
+        grouped[date] = (grouped[date] || 0) + 1;
+      });
+
+      const ctx = document.getElementById("dailyChart");
+
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: Object.keys(grouped),
+          datasets: [{
+            label: "Jumlah Task",
+            data: Object.values(grouped),
+            backgroundColor: "#3b82f6"
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    },
   },
 };
 </script>
